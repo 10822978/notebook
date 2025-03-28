@@ -1,0 +1,7 @@
+
+# 将h264提取中间帧，转为nv12
+ffmpeg -i video.264 -vf "select='between(n\,16950\,16953)'" -pix_fmt nv12 frame_vc1_%02d.raw
+# nv12图片转png图
+ffmpeg -s 1920x1080 -pix_fmt nv12 -i 0_befor.yuv output.png
+# 图像裁切，将800x512的nv12裁切下方800x256的图像
+ffmpeg -f rawvideo -pix_fmt nv12 -s 800x512 -i frame_vc1_02.raw -vf "crop=800:416:0:96" -pix_fmt nv12 output.yuv
